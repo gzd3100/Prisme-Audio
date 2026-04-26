@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISME AUDIO</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--w:#F7F7F5;--wm:#F1EEE8;--g:#D9D9D6;--gm:#9B9B98;--b:#171717;--bs:#1E1E1E;
+--r:#E4572E;--y:#F3B61F;--bl:#2E6CF6;--gr:#4CBF8B;
+--f:'Montserrat',sans-serif;--t:.25s cubic-bezier(.4,0,.2,1)
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--w);color:var(--b);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:var(--f)}
+input,textarea,select{font-family:var(--f)}
+.container{max-width:1180px;margin:0 auto;padding:0 40px}
+@media(max-width:768px){.container{padding:0 20px}}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(247,247,245,.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(217,217,214,.5);transition:var(--t)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px;max-width:1180px;margin:0 auto;padding:0 40px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+.nav-logo-sphere{width:34px;height:34px;border-radius:50%;background:var(--b);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.nav-logo-sphere::before{content:'';position:absolute;width:120%;height:3px;background:linear-gradient(90deg,var(--r),var(--y),var(--bl));transform:rotate(-28deg)}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--b);opacity:.6;transition:opacity var(--t)}
+.nav-links a:hover{opacity:1}
+.nav-cta{background:var(--b)!important;color:var(--w)!important;padding:10px 20px;border-radius:3px;opacity:1!important;transition:background var(--t)!important}
+.nav-cta:hover{background:var(--r)!important}
+.admin-trigger{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gm);padding:6px 12px;border:1px solid var(--g);border-radius:3px;transition:var(--t)}
+.admin-trigger:hover{color:var(--b);border-color:var(--b)}
+
+/* HERO */
+#hero{min-height:100vh;background:var(--b);display:flex;align-items:center;position:relative;overflow:hidden;padding-top:70px}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 65% 60% at 82% 18%,rgba(228,87,46,.13) 0%,transparent 60%),radial-gradient(ellipse 50% 55% at 18% 82%,rgba(46,108,246,.1) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 58% 58%,rgba(243,182,31,.07) 0%,transparent 50%)}
+.hero-content{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 40px;width:100%}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--r);margin-bottom:28px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--r)}
+.hero-h1{font-size:clamp(50px,8.5vw,100px);font-weight:900;color:var(--w);line-height:.93;letter-spacing:-.03em;margin-bottom:32px}
+.hero-h1 em{font-style:normal;-webkit-text-fill-color:transparent;-webkit-text-stroke:1px rgba(247,247,245,.25)}
+.hero-sub{font-size:clamp(15px,2vw,18px);font-weight:300;color:rgba(247,247,245,.5);max-width:500px;line-height:1.75;margin-bottom:48px}
+.hero-btns{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.btn-r{background:var(--r);color:var(--w);padding:15px 30px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:var(--t);display:inline-flex;align-items:center;gap:8px}
+.btn-r:hover{background:#c94020;transform:translateY(-1px)}
+.btn-o{background:transparent;color:rgba(247,247,245,.55);padding:15px 30px;border-radius:3px;border:1px solid rgba(247,247,245,.18);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:var(--t)}
+.btn-o:hover{border-color:rgba(247,247,245,.5);color:var(--w)}
+.hero-bar{position:absolute;bottom:0;left:0;right:0;border-top:1px solid rgba(255,255,255,.07)}
+.hero-bar-inner{max-width:1180px;margin:0 auto;padding:0 40px;display:flex}
+.hb-item{flex:1;padding:18px 20px 18px 0;border-right:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px;color:rgba(247,247,245,.42);font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.hb-item:last-child{border-right:none;padding-left:20px;padding-right:0}
+.hb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* SECTIONS */
+section{padding:110px 0}
+.s-label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--r);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.s-label::before{content:'';display:block;width:18px;height:1px;background:var(--r)}
+.s-title{font-size:clamp(30px,5vw,54px);font-weight:800;line-height:1.05;letter-spacing:-.02em;color:var(--b);margin-bottom:18px}
+.s-sub{font-size:15px;font-weight:300;color:var(--gm);line-height:1.75;max-width:540px}
+
+/* STATS */
+#stats{padding:70px 0;background:var(--wm);border-top:1px solid var(--g);border-bottom:1px solid var(--g)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:0 36px;border-right:1px solid var(--g)}
+.stat:first-child{padding-left:0}
+.stat:last-child{border-right:none}
+.stat-n{font-size:46px;font-weight:900;letter-spacing:-.04em;color:var(--b);line-height:1}
+.stat-n span{color:var(--r);font-size:30px}
+.stat-l{font-size:11px;font-weight:500;color:var(--gm);letter-spacing:.05em;text-transform:uppercase;margin-top:8px}
+@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr;gap:1px;background:var(--g)}.stat{background:var(--wm);padding:28px;border-right:none}}
+
+/* SERVICES */
+#services{background:var(--w)}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;margin-top:72px;background:var(--g);border:1px solid var(--g)}
+.svc-card{background:var(--w);padding:44px 38px;position:relative;overflow:hidden;transition:background var(--t)}
+.svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.svc-card:hover::before{transform:scaleX(1)}
+.svc-card:hover{background:#FAFAF8}
+.svc-n{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--g);margin-bottom:22px}
+.svc-name{font-size:21px;font-weight:800;letter-spacing:-.01em;color:var(--b);margin-bottom:10px}
+.svc-desc{font-size:13px;font-weight:400;color:var(--gm);line-height:1.8;margin-bottom:22px}
+.svc-link{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:6px;transition:gap var(--t)}
+.svc-card:hover .svc-link{gap:10px}
+
+/* PORTFOLIO */
+#portfolio{background:var(--b);padding:110px 0}
+#portfolio .s-title{color:var(--w)}
+#portfolio .s-sub{color:rgba(247,247,245,.42)}
+.pf-filters{display:flex;gap:7px;flex-wrap:wrap;margin:44px 0}
+.pf-btn{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(247,247,245,.14);border-radius:2px;color:rgba(247,247,245,.38);background:transparent;transition:var(--t)}
+.pf-btn:hover,.pf-btn.active{background:var(--w);color:var(--b);border-color:var(--w)}
+.pf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px}
+.pj-card{background:#1A1A1A;position:relative;overflow:hidden;aspect-ratio:4/3;cursor:pointer}
+.pj-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;font-weight:900;letter-spacing:-.05em;opacity:.07;color:var(--w);transition:var(--t)}
+.pj-card:hover .pj-bg{opacity:.14;transform:scale(1.06)}
+.pj-bar{position:absolute;top:0;left:0;width:4px;height:100%}
+.pj-info{position:absolute;bottom:0;left:0;right:0;padding:22px;background:linear-gradient(to top,rgba(0,0,0,.87) 0%,transparent 100%);transform:translateY(3px);transition:var(--t)}
+.pj-card:hover .pj-info{transform:translateY(0)}
+.pj-tag{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--r);margin-bottom:5px}
+.pj-name{font-size:15px;font-weight:700;color:var(--w);margin-bottom:3px}
+.pj-artist{font-size:11px;color:rgba(247,247,245,.45)}
+.pj-player{display:flex;align-items:center;gap:9px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1);opacity:0;transform:translateY(5px);transition:var(--t)}
+.pj-card:hover .pj-player{opacity:1;transform:translateY(0)}
+.play-btn{width:26px;height:26px;border-radius:50%;background:var(--r);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0;transition:var(--t)}
+.play-btn:hover{background:var(--w)}
+.waveform{flex:1;height:22px;display:flex;align-items:center;gap:2px}
+.wb{flex:1;border-radius:1px;background:rgba(255,255,255,.18)}
+
+/* PROCESS */
+#process{background:var(--wm)}
+.proc-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-top:72px;position:relative}
+.proc-step{padding:36px 28px;position:relative}
+.proc-step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--g);z-index:1}
+.proc-step:last-child::after{display:none}
+.step-n{font-size:64px;font-weight:900;color:var(--g);line-height:1;letter-spacing:-.05em;margin-bottom:14px}
+.step-name{font-size:15px;font-weight:700;color:var(--b);margin-bottom:7px}
+.step-desc{font-size:12px;color:var(--gm);line-height:1.7}
+
+/* ABOUT */
+#about{background:var(--w)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:60px}
+.about-visual{aspect-ratio:4/5;background:var(--b);border-radius:4px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.about-vis-overlay{position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(228,87,46,.2) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 100% 100%,rgba(46,108,246,.15) 0%,transparent 60%)}
+.about-vis-txt{position:relative;z-index:2;text-align:center;color:rgba(247,247,245,.18);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.about-vis-logo{font-size:100px;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:-.05em;position:absolute}
+.about-text p{font-size:14px;color:var(--gm);line-height:1.85;margin-bottom:18px}
+.about-vals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:32px}
+.about-val{padding:14px;border:1px solid var(--g);border-radius:3px}
+.about-val-name{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--b);margin-bottom:3px}
+.about-val-desc{font-size:11px;color:var(--gm)}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:36px}}
+
+/* TESTIMONIALS */
+#testi{background:var(--b);padding:100px 0}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;margin-top:56px;background:rgba(255,255,255,.06)}
+.testi-card{background:var(--bs);padding:38px 32px}
+.testi-q{font-size:34px;color:var(--r);font-weight:900;line-height:1;margin-bottom:14px}
+.testi-txt{font-size:14px;font-weight:300;color:rgba(247,247,245,.72);line-height:1.85;margin-bottom:26px;font-style:italic}
+.testi-author{font-size:11px;font-weight:700;color:var(--w);letter-spacing:.05em;text-transform:uppercase}
+.testi-role{font-size:10px;color:rgba(247,247,245,.32);margin-top:2px}
+
+/* CONTACT */
+#contact{background:var(--wm)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:72px;margin-top:54px}
+.contact-info h3{font-size:19px;font-weight:700;margin-bottom:14px;color:var(--b)}
+.contact-info p{font-size:13px;color:var(--gm);line-height:1.85;margin-bottom:28px}
+.c-link{display:flex;align-items:center;gap:11px;padding:14px 0;border-bottom:1px solid var(--g);font-size:13px;font-weight:500;color:var(--b);transition:var(--t)}
+.c-link:hover{color:var(--r)}
+.c-link-icon{width:34px;height:34px;background:var(--w);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:15px;border:1px solid var(--g)}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--b);margin-bottom:7px}
+.form-input,.form-ta,.form-sel{width:100%;padding:13px 15px;background:var(--w);border:1px solid var(--g);border-radius:3px;font-size:13px;color:var(--b);transition:var(--t);appearance:none}
+.form-input:focus,.form-ta:focus,.form-sel:focus{outline:none;border-color:var(--b)}
+.form-ta{resize:vertical;min-height:110px}
+.form-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn-sub{width:100%;padding:17px;background:var(--b);color:var(--w);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:3px;border:2px solid var(--b);transition:var(--t)}
+.btn-sub:hover{background:var(--r);border-color:var(--r)}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:36px}.form-2{grid-template-columns:1fr}}
+
+/* FOOTER */
+footer{background:var(--b);padding:56px 0 28px}
+.ft-inner{display:grid;grid-template-columns:2fr 1fr 1fr;gap:56px;margin-bottom:44px}
+.ft-brand p{font-size:12px;color:rgba(247,247,245,.3);line-height:1.85;margin-top:14px;max-width:270px}
+.ft-col h4{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--w);margin-bottom:18px}
+.ft-col a{display:block;font-size:12px;color:rgba(247,247,245,.32);margin-bottom:9px;transition:var(--t)}
+.ft-col a:hover{color:var(--w)}
+.ft-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;align-items:center;justify-content:space-between}
+.ft-copy{font-size:10px;color:rgba(247,247,245,.2)}
+.ft-soc{display:flex;gap:14px}
+.ft-soc a{font-size:10px;color:rgba(247,247,245,.28);font-weight:600;letter-spacing:.05em;transition:var(--t)}
+.ft-soc a:hover{color:var(--w)}
+@media(max-width:768px){.ft-inner{grid-template-columns:1fr;gap:28px}.ft-bottom{flex-direction:column;gap:14px;text-align:center}}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;z-index:9999;background:var(--b);color:var(--w);padding:13px 18px;border-radius:5px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:9px;transform:translateY(70px);opacity:0;transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:none;border:1px solid rgba(255,255,255,.08)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-dot{width:7px;height:7px;border-radius:50%;background:var(--gr);flex-shrink:0}
+
+/* MOBILE NAV */
+.mob-nav{position:fixed;inset:0;z-index:999;background:var(--b);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.mob-nav.open{transform:translateX(0)}
+.mob-nav a{font-size:26px;font-weight:800;color:var(--w);opacity:.5;transition:opacity var(--t)}
+.mob-nav a:hover{opacity:1}
+.mob-close{position:absolute;top:22px;right:22px;font-size:22px;color:rgba(255,255,255,.35);background:none;border:none;cursor:pointer}
+.burger{display:none;flex-direction:column;gap:4px;padding:8px;cursor:pointer}
+.burger span{display:block;width:20px;height:1.5px;background:var(--b);border-radius:2px}
+@media(max-width:900px){.nav-links{display:none}.burger{display:flex}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ============================
+   ADMIN PANEL
+   ============================ */
+#adm{position:fixed;inset:0;z-index:10000;display:none;font-family:var(--f)}
+#adm.open{display:flex}
+.adm-ov{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px)}
+.adm-side{position:relative;z-index:1;width:232px;flex-shrink:0;background:#0D0D0D;display:flex;flex-direction:column;overflow:hidden}
+.adm-logo{padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:9px}
+.adm-logo-mark{width:26px;height:26px;border-radius:50%;background:var(--r);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#fff}
+.adm-logo-txt{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--w)}
+.adm-logo-sub{font-size:8px;color:rgba(255,255,255,.22);letter-spacing:.04em}
+.adm-nav{flex:1;padding:12px 0;overflow-y:auto}
+.adm-sec{padding:7px 18px 3px;font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.18)}
+.adm-item{display:flex;align-items:center;gap:9px;padding:9px 18px;font-size:11px;font-weight:500;color:rgba(255,255,255,.38);cursor:pointer;transition:var(--t);border-left:2px solid transparent}
+.adm-item:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.03)}
+.adm-item.act{color:var(--w);border-left-color:var(--r);background:rgba(228,87,46,.07)}
+.adm-ico{font-size:13px;width:16px;text-align:center}
+.adm-ftr{padding:14px 16px;border-top:1px solid rgba(255,255,255,.05);display:flex;gap:7px}
+.adm-cls{flex:1;padding:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:3px;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.42);cursor:pointer;transition:var(--t)}
+.adm-cls:hover{color:var(--w);background:rgba(255,255,255,.09)}
+.adm-sav{flex:1;padding:9px;background:var(--r);border:1px solid var(--r);border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff;cursor:pointer;transition:var(--t)}
+.adm-sav:hover{background:#c94020}
+.adm-main{position:relative;z-index:1;flex:1;background:#111;display:flex;flex-direction:column;overflow:hidden}
+.adm-top{height:52px;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.adm-top-title{font-size:13px;font-weight:700;color:var(--w)}
+.adm-top-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.adm-prev{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);padding:7px 14px;border:1px solid rgba(255,255,255,.1);border-radius:3px;background:none;cursor:pointer;transition:var(--t)}
+.adm-prev:hover{color:var(--w);border-color:rgba(255,255,255,.28)}
+.adm-body{flex:1;overflow-y:auto;padding:24px}
+.adm-body::-webkit-scrollbar{width:3px}
+.adm-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.adm-tc{display:none}
+.adm-tc.act{display:block}
+.acard{background:#181818;border:1px solid rgba(255,255,255,.05);border-radius:5px;padding:18px;margin-bottom:14px}
+.acard-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.acard-ttl{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.52)}
+.atag{font-size:8px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.07em}
+.atag-p{background:rgba(46,108,246,.18);color:#7EB0FF}
+.atag-s{background:rgba(228,87,46,.18);color:#F5855B}
+.atag-m{background:rgba(76,191,139,.18);color:#72D9A8}
+.atag-y{background:rgba(243,182,31,.18);color:#F7C84B}
+.af{margin-bottom:17px}
+.al{display:block;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:7px}
+.ai,.ata,.ase{width:100%;padding:11px 13px;background:#1E1E1E;border:1px solid rgba(255,255,255,.07);border-radius:3px;font-size:12px;color:var(--w);transition:var(--t);font-family:var(--f);appearance:none}
+.ai:focus,.ata:focus,.ase:focus{outline:none;border-color:var(--r)}
+.ata{resize:vertical;min-height:80px}
+.ase option{background:#1E1E1E}
+.ag2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.ag3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.ali{background:#1E1E1E;border:1px solid rgba(255,255,255,.05);border-radius:3px;padding:12px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px}
+.ali-drag{color:rgba(255,255,255,.18);font-size:12px;cursor:grab}
+.ali-info{flex:1}
+.ali-name{font-size:12px;font-weight:600;color:var(--w)}
+.ali-sub{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px}
+.ali-acts{display:flex;gap:5px}
+.aibtn{padding:5px 10px;border-radius:2px;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:var(--t)}
+.aibtn-e{background:rgba(46,108,246,.13);color:#7EB0FF;border:1px solid rgba(46,108,246,.18)}
+.aibtn-e:hover{background:rgba(46,108,246,.22)}
+.aibtn-d{background:rgba(228,87,46,.09);color:#F5855B;border:1px solid rgba(228,87,46,.13)}
+.aibtn-d:hover{background:rgba(228,87,46,.18)}
+.aadd{width:100%;padding:11px;background:rgba(255,255,255,.025);border:1px dashed rgba(255,255,255,.09);border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22);cursor:pointer;transition:var(--t);margin-top:7px}
+.aadd:hover{border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.45)}
+.aup{border:1px dashed rgba(255,255,255,.09);border-radius:3px;padding:22px;text-align:center;cursor:pointer;transition:var(--t);background:#1E1E1E;margin-bottom:12px}
+.aup:hover{border-color:var(--r)}
+.aup-ico{font-size:26px;margin-bottom:7px;opacity:.35}
+.aup-txt{font-size:11px;color:rgba(255,255,255,.28)}
+.aup-sub{font-size:9px;color:rgba(255,255,255,.18);margin-top:3px}
+.astats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.astat{background:#181818;border:1px solid rgba(255,255,255,.05);border-radius:5px;padding:16px}
+.astat-n{font-size:26px;font-weight:900;color:var(--w);letter-spacing:-.02em}
+.astat-l{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-top:3px}
+.adot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:5px}
+.aclr-row{display:flex;align-items:center;gap:10px}
+.aclr-in{width:40px;height:34px;border:1px solid rgba(255,255,255,.1);border-radius:3px;background:none;cursor:pointer;padding:2px}
+.aclr-hex{flex:1;padding:9px 12px;background:#1E1E1E;border:1px solid rgba(255,255,255,.07);border-radius:3px;font-size:11px;font-family:monospace;color:var(--w)}
+.adiv{height:1px;background:rgba(255,255,255,.05);margin:16px 0}
+
+/* MODAL */
+.amodal-ov{position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center}
+.amodal-ov.open{display:flex}
+.amodal{background:#181818;border:1px solid rgba(255,255,255,.09);border-radius:7px;width:520px;max-width:94vw;max-height:82vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.amodal-hd{padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#181818;z-index:1}
+.amodal-ttl{font-size:13px;font-weight:700;color:var(--w)}
+.amodal-x{font-size:17px;color:rgba(255,255,255,.28);background:none;border:none;cursor:pointer}
+.amodal-body{padding:22px}
+.amodal-ft{padding:14px 22px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:9px;justify-content:flex-end}
+.acancel{padding:9px 18px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.45);cursor:pointer;transition:var(--t)}
+.acancel:hover{color:var(--w)}
+.asave-m{padding:9px 18px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--r);border:1px solid var(--r);color:#fff;cursor:pointer;transition:var(--t)}
+.asave-m:hover{background:#c94020}
+</style>
+</head>
+<body>
+
+<!-- MOBILE NAV -->
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMob()">✕</button>
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#portfolio" onclick="closeMob()">Portfolio</a>
+  <a href="#about" onclick="closeMob()">À propos</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-logo-sphere"></div>
+      <span>PRISME<span style="color:var(--r)"> AUDIO</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#about">À propos</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="nav-cta">Démarrer un projet</a>
+      <button class="admin-trigger" onclick="openAdm()">⚙ Admin</button>
+    </div>
+    <button class="burger" onclick="openMob()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="h-eyebrow">Mixage · Mastering · Accompagnement</div>
+    <h1 class="hero-h1" id="h-title">Chaque son<br>mérite d'être<br><em id="h-em">entendu.</em></h1>
+    <p class="hero-sub" id="h-sub">PRISME AUDIO accompagne les projets sonores avec exigence — du mixage au mastering, de l'idée à la livraison finale.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-r" id="h-cta1">Parler de votre projet <span>→</span></a>
+      <a href="#portfolio" class="btn-o" id="h-cta2">Voir le portfolio</a>
+    </div>
+  </div>
+  <div class="hero-bar">
+    <div class="hero-bar-inner">
+      <div class="hb-item"><div class="hb-dot" style="background:var(--r)"></div>Mixage</div>
+      <div class="hb-item"><div class="hb-dot" style="background:var(--y)"></div>Mastering</div>
+      <div class="hb-item"><div class="hb-dot" style="background:var(--bl)"></div>Accompagnement</div>
+      <div class="hb-item"><div class="hb-dot" style="background:var(--gr)"></div>Conseil audio</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat reveal"><div class="stat-n" id="s1n">120<span>+</span></div><div class="stat-l" id="s1l">Projets mixés</div></div>
+      <div class="stat reveal d1"><div class="stat-n" id="s2n">8<span> ans</span></div><div class="stat-l" id="s2l">D'expérience</div></div>
+      <div class="stat reveal d2"><div class="stat-n" id="s3n">40<span>+</span></div><div class="stat-l" id="s3l">Artistes accompagnés</div></div>
+      <div class="stat reveal d3"><div class="stat-n" id="s4n">48h</div><div class="stat-l" id="s4l">Délai de réponse</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="reveal">
+      <div class="s-label">Ce que je fais</div>
+      <h2 class="s-title" id="sv-title">Prestations</h2>
+      <p class="s-sub" id="sv-sub">Un regard précis sur chaque projet. Des services pensés pour faire avancer votre musique.</p>
+    </div>
+    <div class="svc-grid" id="svc-grid"></div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="container">
+    <div class="reveal">
+      <div class="s-label" style="color:var(--r)">Réalisations</div>
+      <h2 class="s-title" id="pf-title">Portfolio</h2>
+      <p class="s-sub" id="pf-sub">Projets récents. Mixage, mastering, accompagnement artistique.</p>
+    </div>
+    <div class="pf-filters" id="pf-filters">
+      <button class="pf-btn active" data-f="all">Tout voir</button>
+      <button class="pf-btn" data-f="mixage">Mixage</button>
+      <button class="pf-btn" data-f="mastering">Mastering</button>
+      <button class="pf-btn" data-f="accompagnement">Accompagnement</button>
+    </div>
+    <div class="pf-grid" id="pf-grid"></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="reveal">
+      <div class="s-label">Comment ça se passe</div>
+      <h2 class="s-title">De la demande à la livraison</h2>
+    </div>
+    <div class="proc-steps">
+      <div class="proc-step reveal"><div class="step-n">01</div><div class="step-name">Échange initial</div><div class="step-desc">On discute de votre projet, vos envies, vos références. Aucun engagement à ce stade.</div></div>
+      <div class="proc-step reveal d1"><div class="step-n">02</div><div class="step-name">Devis & accord</div><div class="step-desc">Je vous envoie un devis détaillé. On valide ensemble les étapes et le planning.</div></div>
+      <div class="proc-step reveal d2"><div class="step-n">03</div><div class="step-name">Dépôt des fichiers</div><div class="step-desc">Vous déposez vos sessions ou stems sur notre espace sécurisé.</div></div>
+      <div class="proc-step reveal d3"><div class="step-n">04</div><div class="step-name">Livraison & retours</div><div class="step-desc">Je livre une première version. On affine ensemble jusqu'au résultat parfait.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual reveal" id="about-vis">
+        <div class="about-vis-logo">PA</div>
+        <div class="about-vis-overlay"></div>
+        <div class="about-vis-txt"><div style="font-size:32px;font-weight:900;color:rgba(255,255,255,.12);letter-spacing:-.03em">PRISME</div><div style="font-size:10px;margin-top:8px;opacity:.4">Photo à remplacer<br>via le panel admin</div></div>
+      </div>
+      <div class="reveal d2">
+        <div class="s-label">Qui suis-je</div>
+        <h2 class="s-title" id="ab-title">Une oreille,<br>un regard.</h2>
+        <p id="ab-p1">PRISME AUDIO est né d'une conviction simple : un bon son change tout. Pas juste techniquement — profondément. Il change la façon dont une chanson touche, dont un projet convainc, dont une identité s'affirme.</p>
+        <p id="ab-p2">Structure indépendante, regard artistique précis, exigence du détail. Ni agence, ni usine — un partenaire de création sérieux qui s'implique vraiment dans chaque projet.</p>
+        <div class="about-vals" id="ab-vals"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testi">
+  <div class="container">
+    <div class="reveal">
+      <div class="s-label" style="color:var(--r)">Ils en parlent mieux</div>
+      <h2 class="s-title" style="color:var(--w)">Témoignages</h2>
+    </div>
+    <div class="testi-grid" id="testi-grid"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal">
+      <div class="s-label">Travaillons ensemble</div>
+      <h2 class="s-title" id="ct-title">Parlez-moi<br>de votre projet.</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <h3 id="ct-h3">Pas de formalités.</h3>
+        <p id="ct-p">Je lis chaque message avec attention et réponds sous 48h. Décrivez-moi votre projet, votre style, vos envies — et on voit ensemble comment avancer.</p>
+        <div class="c-link"><div class="c-link-icon">✉</div><span id="ct-email">contact@prismeaudio.fr</span></div>
+        <div class="c-link"><div class="c-link-icon">◎</div><span id="ct-insta">@prismeaudio</span></div>
+        <div class="c-link"><div class="c-link-icon">◷</div><span>Réponse sous 48h</span></div>
+      </div>
+      <div class="reveal d2">
+        <form onsubmit="submitForm(event)">
+          <div class="form-2">
+            <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" placeholder="Votre prénom" required></div>
+            <div class="form-group"><label class="form-label">Nom</label><input class="form-input" placeholder="Votre nom" required></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="votre@email.com" required></div>
+          <div class="form-group"><label class="form-label">Type de besoin</label>
+            <select class="form-sel form-input">
+              <option value="">— Sélectionner —</option>
+              <option>Mixage</option><option>Mastering</option><option>Mix + Mastering</option>
+              <option>Accompagnement artistique</option><option>Autre / Sur devis</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Votre projet</label><textarea class="form-ta" placeholder="Décrivez votre projet, style musical, références..." required></textarea></div>
+          <button type="submit" class="btn-sub">Envoyer le message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="ft-inner">
+      <div class="ft-brand">
+        <div class="nav-logo"><div class="nav-logo-sphere"></div><span style="color:var(--w)">PRISME<span style="color:var(--r)"> AUDIO</span></span></div>
+        <p id="ft-desc">Structure indépendante spécialisée en mixage, mastering et accompagnement artistique. Toulouse, France.</p>
+      </div>
+      <div class="ft-col"><h4>Services</h4><a href="#services">Mixage</a><a href="#services">Mastering</a><a href="#services">Mix + Mastering</a><a href="#services">Accompagnement</a></div>
+      <div class="ft-col"><h4>Contact</h4><a href="#contact">Démarrer un projet</a><a href="#about">À propos</a><a href="#portfolio">Portfolio</a><a href="javascript:void(0)" onclick="openAdm()">Panel admin</a></div>
+    </div>
+    <div class="ft-bottom">
+      <div class="ft-copy" id="ft-copy">© 2025 PRISME AUDIO — Tous droits réservés</div>
+      <div class="ft-soc"><a href="#">Instagram</a><a href="#">SoundCloud</a><a href="#">Spotify</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"><div class="toast-dot"></div><span id="toast-msg">Sauvegardé</span></div>
+
+<!-- ADMIN PANEL -->
+<div id="adm">
+  <div class="adm-ov" onclick="closeAdm()"></div>
+  <div class="adm-side">
+    <div class="adm-logo">
+      <div class="adm-logo-mark">PA</div>
+      <div><div class="adm-logo-txt">PRISME AUDIO</div><div class="adm-logo-sub">Administration</div></div>
+    </div>
+    <div class="adm-nav">
+      <div class="adm-sec">Général</div>
+      <div class="adm-item act" onclick="swTab('dash',this)"><span class="adm-ico">◎</span>Dashboard</div>
+      <div class="adm-sec">Pages</div>
+      <div class="adm-item" onclick="swTab('hero',this)"><span class="adm-ico">◈</span>Accueil / Hero</div>
+      <div class="adm-item" onclick="swTab('svc',this)"><span class="adm-ico">◫</span>Services</div>
+      <div class="adm-item" onclick="swTab('pf',this)"><span class="adm-ico">▣</span>Portfolio</div>
+      <div class="adm-item" onclick="swTab('ab',this)"><span class="adm-ico">◑</span>À propos</div>
+      <div class="adm-item" onclick="swTab('ti',this)"><span class="adm-ico">◐</span>Témoignages</div>
+      <div class="adm-item" onclick="swTab('ct',this)"><span class="adm-ico">✉</span>Contact</div>
+      <div class="adm-item" onclick="swTab('ft',this)"><span class="adm-ico">◻</span>Footer</div>
+      <div class="adm-sec">Design</div>
+      <div class="adm-item" onclick="swTab('clr',this)"><span class="adm-ico">◍</span>Couleurs & Typo</div>
+      <div class="adm-item" onclick="swTab('med',this)"><span class="adm-ico">⊞</span>Médias / Images</div>
+      <div class="adm-sec">Gestion</div>
+      <div class="adm-item" onclick="swTab('crm',this)"><span class="adm-ico">◉</span>Clients & Projets</div>
+      <div class="adm-item" onclick="swTab('cpt',this)"><span class="adm-ico">◊</span>Comptabilité</div>
+      <div class="adm-item" onclick="swTab('fich',this)"><span class="adm-ico">⊟</span>Fichiers</div>
+    </div>
+    <div class="adm-ftr">
+      <button class="adm-cls" onclick="closeAdm()">Fermer</button>
+      <button class="adm-sav" onclick="saveAll()">Sauvegarder</button>
+    </div>
+  </div>
+  <div class="adm-main">
+    <div class="adm-top">
+      <div><div class="adm-top-title" id="adm-ttl">Dashboard</div><div class="adm-top-sub" id="adm-sub">Vue d'ensemble</div></div>
+      <button class="adm-prev" onclick="closeAdm()">↗ Voir le site</button>
+    </div>
+    <div class="adm-body">
+
+      <!-- DASH -->
+      <div class="adm-tc act" id="tc-dash">
+        <div class="astats">
+          <div class="astat"><div class="astat-n">5</div><div class="astat-l"><span class="adot" style="background:var(--bl)"></span>Pages publiées</div></div>
+          <div class="astat"><div class="astat-n" id="d-svc">5</div><div class="astat-l"><span class="adot" style="background:var(--y)"></span>Services</div></div>
+          <div class="astat"><div class="astat-n" id="d-pf">6</div><div class="astat-l"><span class="adot" style="background:var(--r)"></span>Projets portfolio</div></div>
+          <div class="astat"><div class="astat-n" id="d-cl">3</div><div class="astat-l"><span class="adot" style="background:var(--gr)"></span>Clients actifs</div></div>
+        </div>
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Raccourcis</span></div>
+          <div class="ag3">
+            <button class="aadd" style="border-style:solid;color:rgba(255,255,255,.38)" onclick="swTab('hero',document.querySelector('[onclick*=hero]'))">✏ Modifier l'accueil</button>
+            <button class="aadd" style="border-style:solid;color:rgba(255,255,255,.38)" onclick="swTab('pf',document.querySelector('[onclick*=\"pf\"]'))">+ Ajouter un projet</button>
+            <button class="aadd" style="border-style:solid;color:rgba(255,255,255,.38)" onclick="swTab('crm',document.querySelector('[onclick*=crm]'))">👤 Gérer les clients</button>
+          </div>
+        </div>
+        <div class="acard"><div class="acard-hd"><span class="acard-ttl">Dernières sauvegardes</span></div><div id="d-log"><div style="color:rgba(255,255,255,.22);font-size:11px">Aucune modification cette session.</div></div></div>
+      </div>
+
+      <!-- HERO -->
+      <div class="adm-tc" id="tc-hero">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Hero — Bandeau principal</span><span class="atag atag-s">Section</span></div>
+          <div class="af"><label class="al">Accroche / eyebrow</label><input class="ai" id="a-ey" placeholder="Mixage · Mastering · Accompagnement"></div>
+          <div class="af"><label class="al">Titre ligne 1</label><input class="ai" id="a-tl1"></div>
+          <div class="af"><label class="al">Titre ligne 2</label><input class="ai" id="a-tl2"></div>
+          <div class="af"><label class="al">Mot en relief (outline)</label><input class="ai" id="a-tl3"></div>
+          <div class="af"><label class="al">Sous-titre</label><textarea class="ata" id="a-sub" style="min-height:65px"></textarea></div>
+          <div class="ag2">
+            <div class="af"><label class="al">CTA principal</label><input class="ai" id="a-c1"></div>
+            <div class="af"><label class="al">CTA secondaire</label><input class="ai" id="a-c2"></div>
+          </div>
+        </div>
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Chiffres clés</span><span class="atag atag-s">Stats</span></div>
+          <div class="ag2">
+            <div class="af"><label class="al">Stat 1 — Valeur</label><input class="ai" id="a-s1n"></div>
+            <div class="af"><label class="al">Stat 1 — Label</label><input class="ai" id="a-s1l"></div>
+            <div class="af"><label class="al">Stat 2 — Valeur</label><input class="ai" id="a-s2n"></div>
+            <div class="af"><label class="al">Stat 2 — Label</label><input class="ai" id="a-s2l"></div>
+            <div class="af"><label class="al">Stat 3 — Valeur</label><input class="ai" id="a-s3n"></div>
+            <div class="af"><label class="al">Stat 3 — Label</label><input class="ai" id="a-s3l"></div>
+            <div class="af"><label class="al">Stat 4 — Valeur</label><input class="ai" id="a-s4n"></div>
+            <div class="af"><label class="al">Stat 4 — Label</label><input class="ai" id="a-s4l"></div>
+          </div>
+        </div>
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Titres des sections</span><span class="atag atag-p">Pages</span></div>
+          <div class="af"><label class="al">Titre section Services</label><input class="ai" id="a-svt"></div>
+          <div class="af"><label class="al">Sous-titre section Services</label><textarea class="ata" id="a-svs" style="min-height:55px"></textarea></div>
+          <div class="af"><label class="al">Titre section Portfolio</label><input class="ai" id="a-pft"></div>
+          <div class="af"><label class="al">Sous-titre section Portfolio</label><textarea class="ata" id="a-pfs" style="min-height:55px"></textarea></div>
+        </div>
+        <button class="adm-sav" style="width:100%;padding:13px;margin-top:6px" onclick="saveAll()">Appliquer les modifications →</button>
+      </div>
+
+      <!-- SERVICES -->
+      <div class="adm-tc" id="tc-svc">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Gestion des services</span><span class="atag atag-y">Services</span></div>
+          <div id="a-svc-list"></div>
+          <button class="aadd" onclick="addSvc()">+ Ajouter un service</button>
+        </div>
+        <button class="adm-sav" style="width:100%;padding:13px;margin-top:6px" onclick="saveAll()">Appliquer →</button>
+      </div>
+
+      <!-- PORTFOLIO -->
+      <div class="adm-tc" id="tc-pf">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Projets du portfolio</span><span class="atag atag-m">Portfolio</span></div>
+          <div id="a-pf-list"></div>
+          <button class="aadd" onclick="addPrj()">+ Ajouter un projet</button>
+        </div>
+        <button class="adm-sav" style="width:100%;padding:13px;margin-top:6px" onclick="saveAll()">Appliquer →</button>
+      </div>
+
+      <!-- À PROPOS -->
+      <div class="adm-tc" id="tc-ab">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Section À propos</span><span class="atag atag-p">Page</span></div>
+          <div class="af"><label class="al">Titre (utilisez \n pour saut de ligne)</label><input class="ai" id="a-abt"></div>
+          <div class="af"><label class="al">Paragraphe 1</label><textarea class="ata" id="a-abp1"></textarea></div>
+          <div class="af"><label class="al">Paragraphe 2</label><textarea class="ata" id="a-abp2"></textarea></div>
+        </div>
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Valeurs (4 blocs)</span><span class="atag atag-s">Blocs</span></div>
+          <div id="a-vals-list"></div>
+        </div>
+        <button class="adm-sav" style="width:100%;padding:13px;margin-top:6px" onclick="saveAll()">Appliquer →</button>
+      </div>
+
+      <!-- TÉMOIGNAGES -->
+      <div class="adm-tc" id="tc-ti">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Témoignages</span><span class="atag atag-s">Section</span></div>
+          <div id="a-ti-list"></div>
+          <button class="aadd" onclick="addTesti()">+ Ajouter un témoignage</button>
+        </div>
+        <button class="adm-sav" style="width:100%;padding:13px;margin-top:6px" onclick="saveAll()">Appliquer →</button>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="adm-tc" id="tc-ct">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Page Contact</span><span class="atag atag-p">Page</span></div>
+          <div class="af"><label class="al">Titre principal</label><input class="ai" id="a-ctt"></div>
+          <div class="af"><label class="al">Accroche</label><input class="ai" id="a-cth3"></div>
+          <div class="af"><label class="al">Texte intro</label><textarea class="ata" id="a-ctp"></textarea></div>
+          <div class="ag2">
+            <div class="af"><label class="al">Email affiché</label><input class="ai" id="a-cte" type="email"></div>
+            <div class="af"><label class="al">Instagram</label><input class="ai" id="a-cti" placeholder="@prismeaudio"></div>
+          </div>
+        </div>
+        <button class="adm-sav" style="width:100%;padding:13px;margin-top:6px" onclick="saveAll()">Appliquer →</button>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="adm-tc" id="tc-ft">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Footer</span><span class="atag atag-p">Page</span></div>
+          <div class="af"><label class="al">Baseline / description</label><textarea class="ata" id="a-ftd" style="min-height:65px"></textarea></div>
+          <div class="af"><label class="al">Texte copyright</label><input class="ai" id="a-ftc"></div>
+        </div>
+        <button class="adm-sav" style="width:100%;padding:13px;margin-top:6px" onclick="saveAll()">Appliquer →</button>
+      </div>
+
+      <!-- COULEURS -->
+      <div class="adm-tc" id="tc-clr">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Palette de couleurs</span><span class="atag atag-m">Design</span></div>
+          <div id="a-clr-list"></div>
+        </div>
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Police principale</span><span class="atag atag-m">Typo</span></div>
+          <div class="af">
+            <label class="al">Famille de police</label>
+            <select class="ase" id="a-font" onchange="changeFont(this.value)">
+              <option value="Montserrat">Montserrat (défaut)</option>
+              <option value="DM Sans">DM Sans</option>
+              <option value="Outfit">Outfit</option>
+              <option value="Sora">Sora</option>
+              <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
+            </select>
+          </div>
+        </div>
+        <button class="adm-sav" style="width:100%;padding:13px;margin-top:6px" onclick="saveAll()">Appliquer les couleurs →</button>
+      </div>
+
+      <!-- MÉDIAS -->
+      <div class="adm-tc" id="tc-med">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Logo du site</span><span class="atag atag-m">Image</span></div>
+          <div class="aup" onclick="document.getElementById('up-logo').click()"><div class="aup-ico">⊕</div><div class="aup-txt">Cliquer pour remplacer le logo</div><div class="aup-sub">PNG transparent · SVG accepté</div></div>
+          <input type="file" id="up-logo" accept="image/*" style="display:none" onchange="upLogo(this)">
+          <div id="logo-prev" style="display:none;margin-top:10px"><img id="logo-prev-img" style="max-height:56px;border-radius:3px;background:#222;padding:6px"></div>
+        </div>
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Photo À propos</span><span class="atag atag-m">Image</span></div>
+          <div class="aup" onclick="document.getElementById('up-about').click()"><div class="aup-ico">⊕</div><div class="aup-txt">Remplacer la photo de la section À propos</div><div class="aup-sub">JPG / PNG · Ratio 4/5 recommandé</div></div>
+          <input type="file" id="up-about" accept="image/*" style="display:none" onchange="upAbout(this)">
+        </div>
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Fond Hero</span><span class="atag atag-m">Image</span></div>
+          <div class="aup" onclick="document.getElementById('up-hero').click()"><div class="aup-ico">⊕</div><div class="aup-txt">Ajouter un fond photographique au Hero</div><div class="aup-sub">JPG · Min 1920px de large</div></div>
+          <input type="file" id="up-hero" accept="image/*" style="display:none" onchange="upHero(this)">
+        </div>
+      </div>
+
+      <!-- CRM -->
+      <div class="adm-tc" id="tc-crm">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Clients & Projets</span><span class="atag atag-p">CRM</span></div>
+          <button class="aadd" style="border-style:solid;color:var(--gr);border-color:rgba(76,191,139,.2);margin-bottom:12px" onclick="newClient()">+ Nouveau client / projet</button>
+          <div id="crm-list"></div>
+        </div>
+      </div>
+
+      <!-- COMPTA -->
+      <div class="adm-tc" id="tc-cpt">
+        <div class="astats" style="grid-template-columns:repeat(3,1fr)">
+          <div class="astat"><div class="astat-n" id="cpt-ok" style="color:var(--gr)">0 €</div><div class="astat-l"><span class="adot" style="background:var(--gr)"></span>Encaissé</div></div>
+          <div class="astat"><div class="astat-n" id="cpt-att" style="color:var(--y)">0 €</div><div class="astat-l"><span class="adot" style="background:var(--y)"></span>En attente</div></div>
+          <div class="astat"><div class="astat-n" id="cpt-ret" style="color:var(--r)">0 €</div><div class="astat-l"><span class="adot" style="background:var(--r)"></span>En retard</div></div>
+        </div>
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Suivi des paiements</span><span class="atag atag-y">Finance</span></div>
+          <div id="cpt-list"></div>
+          <button class="aadd" onclick="newInv()">+ Ajouter une facture</button>
+        </div>
+      </div>
+
+      <!-- FICHIERS -->
+      <div class="adm-tc" id="tc-fich">
+        <div class="acard">
+          <div class="acard-hd"><span class="acard-ttl">Fichiers clients</span><span class="atag atag-m">Fichiers</span></div>
+          <div class="aup" onclick="document.getElementById('up-cli').click()"><div class="aup-ico">⊕</div><div class="aup-txt">Déposer un fichier client</div><div class="aup-sub">MP3, WAV, ZIP, PDF — Max 100 Mo</div></div>
+          <input type="file" id="up-cli" style="display:none" onchange="upFile(this)">
+          <div id="fich-list"></div>
+        </div>
+      </div>
+
+    </div><!-- /adm-body -->
+  </div><!-- /adm-main -->
+</div><!-- /adm -->
+
+<!-- MODAL -->
+<div class="amodal-ov" id="modal">
+  <div class="amodal">
+    <div class="amodal-hd"><div class="amodal-ttl" id="m-ttl">Modifier</div><button class="amodal-x" onclick="closeM()">✕</button></div>
+    <div class="amodal-body" id="m-body"></div>
+    <div class="amodal-ft"><button class="acancel" onclick="closeM()">Annuler</button><button class="asave-m" onclick="saveM()">Enregistrer</button></div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// DATA STORE
+// ================================================================
+let S = {
+  hero:{ ey:'Mixage · Mastering · Accompagnement', tl1:'Chaque son', tl2:"mérite d'être", tl3:'entendu.', sub:"PRISME AUDIO accompagne les projets sonores avec exigence — du mixage au mastering, de l'idée à la livraison finale.", c1:'Parler de votre projet', c2:'Voir le portfolio' },
+  stats:[
+    {n:'120',s:'+',l:'Projets mixés'},
+    {n:'8',s:' ans',l:"D'expérience"},
+    {n:'40',s:'+',l:'Artistes accompagnés'},
+    {n:'48h',s:'',l:'Délai de réponse'}
+  ],
+  sec:{
+    svt:'Prestations', svs:'Un regard précis sur chaque projet. Des services pensés pour faire avancer votre musique.',
+    pft:'Portfolio', pfs:'Projets récents. Mixage, mastering, accompagnement artistique.',
+    abt:'Une oreille,\nun regard.',
+    abp1:"PRISME AUDIO est né d'une conviction simple : un bon son change tout. Pas juste techniquement — profondément. Il change la façon dont une chanson touche, dont un projet convainc, dont une identité s'affirme.",
+    abp2:"Structure indépendante, regard artistique précis, exigence du détail. Ni agence, ni usine — un partenaire de création sérieux qui s'implique vraiment dans chaque projet.",
+    ctt:'Parlez-moi\nde votre projet.', cth3:'Pas de formalités.',
+    ctp:"Je lis chaque message avec attention et réponds sous 48h. Décrivez-moi votre projet, votre style, vos envies — et on voit ensemble comment avancer.",
+    cte:'contact@prismeaudio.fr', cti:'@prismeaudio',
+    ftd:'Structure indépendante spécialisée en mixage, mastering et accompagnement artistique. Toulouse, France.',
+    ftc:'© 2025 PRISME AUDIO — Tous droits réservés'
+  },
+  services:[
+    {id:1,n:'01',name:'Mixage',desc:"Équilibre, profondeur, impact. Je travaille chaque élément pour que le mix soit à la fois propre et vivant, fidèle à l'intention artistique.",link:'Demander un devis',col:'var(--r)'},
+    {id:2,n:'02',name:'Mastering',desc:"La dernière étape qui fait la différence. Un mastering cohérent, adapté aux plateformes de streaming, qui donne à votre son sa dimension finale.",link:'Demander un devis',col:'var(--y)'},
+    {id:3,n:'03',name:'Mix + Mastering',desc:"Les deux étapes en un seul flux de travail, pour une cohérence maximale et un rendu optimisé. L'option la plus complète.",link:'Demander un devis',col:'var(--bl)'},
+    {id:4,n:'04',name:'Accompagnement artistique',desc:"Plus qu'un technicien — un regard extérieur sur l'arrangement, la direction artistique, le chemin vers un son qui vous ressemble.",link:'En savoir plus',col:'var(--gr)'},
+    {id:5,n:'05',name:'Projets sur devis',desc:"Productions atypiques, bandes son, podcasts, post-production audio — tout projet qui ne rentre pas dans une case standard.",link:'Discutons-en',col:'var(--gm)'}
+  ],
+  projects:[
+    {id:1,name:'Lumières Fauves',artist:'Projet solo',tag:'Mixage',fil:'mixage',col:'var(--r)',let:'L'},
+    {id:2,name:'Sable & Cendre',artist:'Album indé',tag:'Mix + Mastering',fil:'mastering',col:'var(--y)',let:'S'},
+    {id:3,name:'Vertiges',artist:'EP électronique',tag:'Mastering',fil:'mastering',col:'var(--bl)',let:'V'},
+    {id:4,name:'Corpus Noir',artist:'Post-rock',tag:'Mixage',fil:'mixage',col:'var(--gr)',let:'C'},
+    {id:5,name:'Éclat',artist:'Artiste accompagnée',tag:'Accompagnement',fil:'accompagnement',col:'var(--r)',let:'É'},
+    {id:6,name:'Nuit Blanche',artist:'Hip-hop / prod',tag:'Mixage',fil:'mixage',col:'var(--y)',let:'N'}
+  ],
+  values:[
+    {name:'Précision',desc:'Chaque détail compte.'},
+    {name:'Créativité',desc:'Au-delà de la technique.'},
+    {name:'Sincérité',desc:'Un regard honnête.'},
+    {name:'Engagement',desc:'Du début à la fin.'}
+  ],
+  testimonials:[
+    {id:1,txt:"Le résultat dépasse largement mes attentes. Un travail minutieux, une vraie écoute artistique. Je recommande sans hésiter.",author:'Sara M.',role:'Auteure-compositrice'},
+    {id:2,txt:"Professionnalisme, réactivité, et surtout une vraie sensibilité musicale. Mon EP a une dimension que je n'aurais pas obtenue ailleurs.",author:'Karim L.',role:'Producteur indépendant'},
+    {id:3,txt:"Chaque échange a été constructif. On sent que c'est quelqu'un qui aime vraiment la musique, pas juste un prestataire.",author:'Julie R.',role:'Artiste folk'}
+  ],
+  colors:{'--r':'#E4572E','--y':'#F3B61F','--bl':'#2E6CF6','--gr':'#4CBF8B','--b':'#171717','--w':'#F7F7F5','--wm':'#F1EEE8','--g':'#D9D9D6'},
+  clients:[
+    {id:1,name:'Sara Martin',email:'sara@email.com',project:'EP Lumières Fauves',type:'Mix + Mastering',status:'en cours',budget:650,acompte:325,note:'Livraison semaine prochaine'},
+    {id:2,name:'Karim Laoufi',email:'karim@prod.fr',project:'Album Corpus Noir',type:'Mixage',status:'terminé',budget:1200,acompte:1200,note:''},
+    {id:3,name:'Julie Renard',email:'julie@music.fr',project:'Single Éclat',type:'Mastering',status:'prospect',budget:200,acompte:0,note:'Attente confirmation'}
+  ],
+  invoices:[
+    {id:1,client:'Sara Martin',amount:325,status:'payé',date:'2025-01-10',type:'Acompte'},
+    {id:2,client:'Karim Laoufi',amount:1200,status:'payé',date:'2025-01-05',type:'Solde total'},
+    {id:3,client:'Julie Renard',amount:200,status:'en attente',date:'2025-01-20',type:'Devis'}
+  ],
+  files:[]
+};
+
+// Load saved data
+try{ const sv=localStorage.getItem('pa_data'); if(sv) S=JSON.parse(sv); }catch(e){}
+
+// ================================================================
+// RENDER PUBLIC SITE
+// ================================================================
+function render(){
+  // Hero
+  setText('h-eyebrow',S.hero.ey);
+  const ht=document.getElementById('h-title');
+  if(ht) ht.innerHTML=`${S.hero.tl1}<br>${S.hero.tl2}<br><em id="h-em">${S.hero.tl3}</em>`;
+  setText('h-sub',S.hero.sub);
+  const c1=document.getElementById('h-cta1');
+  if(c1){ c1.childNodes[0].textContent=S.hero.c1+' '; }
+  setText('h-cta2',S.hero.c2);
+
+  // Stats
+  S.stats.forEach((st,i)=>{
+    const en=document.getElementById(`s${i+1}n`);
+    if(en) en.innerHTML=`${st.n}<span>${st.s}</span>`;
+    setText(`s${i+1}l`,st.l);
+  });
+
+  // Section titles
+  setText('sv-title',S.sec.svt); setText('sv-sub',S.sec.svs);
+  setText('pf-title',S.sec.pft); setText('pf-sub',S.sec.pfs);
+  const abt=document.getElementById('ab-title');
+  if(abt) abt.innerHTML=S.sec.abt.replace(/\n/g,'<br>');
+  setText('ab-p1',S.sec.abp1); setText('ab-p2',S.sec.abp2);
+  const ctt=document.getElementById('ct-title');
+  if(ctt) ctt.innerHTML=S.sec.ctt.replace(/\n/g,'<br>');
+  setText('ct-h3',S.sec.cth3); setText('ct-p',S.sec.ctp);
+  setText('ct-email',S.sec.cte); setText('ct-insta',S.sec.cti);
+  setText('ft-desc',S.sec.ftd); setText('ft-copy',S.sec.ftc);
+
+  // Services
+  const sg=document.getElementById('svc-grid');
+  if(sg) sg.innerHTML=S.services.map(s=>`
+    <div class="svc-card reveal" style="--ac:${s.col}">
+      <style>.svc-card:hover::before{background:${s.col}!important}</style>
+      <div class="svc-n">${s.n}</div>
+      <div style="margin-bottom:20px">
+        <svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" stroke="${s.col}" stroke-width="1.2" opacity=".3" fill="none"/><circle cx="20" cy="20" r="7" fill="${s.col}" opacity=".75"/></svg>
+      </div>
+      <div class="svc-name">${s.name}</div>
+      <div class="svc-desc">${s.desc}</div>
+      <a href="#contact" class="svc-link" style="color:${s.col}">${s.link} →</a>
+    </div>`).join('');
+
+  // Portfolio
+  const pg=document.getElementById('pf-grid');
+  if(pg) pg.innerHTML=S.projects.map(p=>`
+    <div class="pj-card" data-f="${p.fil}">
+      <div class="pj-bg">${p.let}</div>
+      <div class="pj-bar" style="background:${p.col}"></div>
+      <div class="pj-info">
+        <div class="pj-tag">${p.tag}</div>
+        <div class="pj-name">${p.name}</div>
+        <div class="pj-artist">${p.artist}</div>
+        <div class="pj-player">
+          <button class="play-btn" onclick="togglePlay(this)">
+            <svg width="8" height="11" fill="white" viewBox="0 0 8 11"><path d="M0 0L8 5.5L0 11V0Z"/></svg>
+          </button>
+          <div class="waveform">${Array(18).fill(0).map((_,i)=>`<div class="wb" style="height:${7+Math.sin(i*.9)*9+Math.random()*7}px"></div>`).join('')}</div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // About values
+  const av=document.getElementById('ab-vals');
+  if(av) av.innerHTML=S.values.map(v=>`<div class="about-val"><div class="about-val-name">${v.name}</div><div class="about-val-desc">${v.desc}</div></div>`).join('');
+
+  // Testimonials
+  const tg=document.getElementById('testi-grid');
+  if(tg) tg.innerHTML=S.testimonials.map(t=>`
+    <div class="testi-card reveal">
+      <div class="testi-q">"</div>
+      <div class="testi-txt">${t.txt}</div>
+      <div class="testi-author">${t.author}</div>
+      <div class="testi-role">${t.role}</div>
+    </div>`).join('');
+
+  // Colors
+  Object.entries(S.colors).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
+
+  initReveal();
+  initFilters();
+  updateDash();
+}
+
+function setText(id,txt){
+  const el=document.getElementById(id);
+  if(el) el.textContent=txt;
+}
+
+// ================================================================
+// ADMIN: POPULATE FIELDS
+// ================================================================
+function populate(){
+  setV('a-ey',S.hero.ey); setV('a-tl1',S.hero.tl1); setV('a-tl2',S.hero.tl2);
+  setV('a-tl3',S.hero.tl3); setV('a-sub',S.hero.sub);
+  setV('a-c1',S.hero.c1); setV('a-c2',S.hero.c2);
+  S.stats.forEach((st,i)=>{ setV(`a-s${i+1}n`,st.n+st.s); setV(`a-s${i+1}l`,st.l); });
+  setV('a-svt',S.sec.svt); setV('a-svs',S.sec.svs);
+  setV('a-pft',S.sec.pft); setV('a-pfs',S.sec.pfs);
+  setV('a-abt',S.sec.abt); setV('a-abp1',S.sec.abp1); setV('a-abp2',S.sec.abp2);
+  setV('a-ctt',S.sec.ctt); setV('a-cth3',S.sec.cth3); setV('a-ctp',S.sec.ctp);
+  setV('a-cte',S.sec.cte); setV('a-cti',S.sec.cti);
+  setV('a-ftd',S.sec.ftd); setV('a-ftc',S.sec.ftc);
+  renderASvc(); renderAPf(); renderAVals(); renderATi(); renderAClr(); renderCRM(); renderCompta(); renderFiles();
+}
+
+function setV(id,val){ const el=document.getElementById(id); if(el) el.value=val||''; }
+function getV(id){ const el=document.getElementById(id); return el?el.value.trim():''; }
+
+// ================================================================
+// SAVE ALL
+// ================================================================
+function saveAll(){
+  S.hero.ey=getV('a-ey')||S.hero.ey;
+  S.hero.tl1=getV('a-tl1')||S.hero.tl1; S.hero.tl2=getV('a-tl2')||S.hero.tl2;
+  S.hero.tl3=getV('a-tl3')||S.hero.tl3; S.hero.sub=getV('a-sub')||S.hero.sub;
+  S.hero.c1=getV('a-c1')||S.hero.c1; S.hero.c2=getV('a-c2')||S.hero.c2;
+  S.stats.forEach((st,i)=>{ const v=getV(`a-s${i+1}n`); if(v){st.n=v;st.s='';} const l=getV(`a-s${i+1}l`); if(l) st.l=l; });
+  const sf=['svt','svs','pft','pfs','abt','abp1','abp2','ctt','cth3','ctp','cte','cti','ftd','ftc'];
+  sf.forEach(k=>{ const v=getV('a-'+k); if(v) S.sec[k]=v; });
+  try{ localStorage.setItem('pa_data',JSON.stringify(S)); }catch(e){}
+  render();
+  const log=document.getElementById('d-log');
+  if(log){ const t=new Date().toLocaleTimeString('fr-FR'); log.innerHTML=`<div style="font-size:10px;color:var(--gr);padding:3px 0">✓ ${t} — Sauvegardé et appliqué</div>`+log.innerHTML; }
+  toast('Modifications sauvegardées et appliquées !');
+}
+
+// ================================================================
+// ADMIN RENDER LISTS
+// ================================================================
+function renderASvc(){
+  const el=document.getElementById('a-svc-list');
+  if(!el) return;
+  el.innerHTML=S.services.map(s=>`
+    <div class="ali">
+      <span class="ali-drag">⠿</span>
+      <div class="ali-info"><div class="ali-name">${s.name}</div><div class="ali-sub">${s.desc.substring(0,55)}…</div></div>
+      <div class="ali-acts">
+        <button class="aibtn aibtn-e" onclick="editSvc(${s.id})">Modifier</button>
+        <button class="aibtn aibtn-d" onclick="delSvc(${s.id})">Suppr.</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderAPf(){
+  const el=document.getElementById('a-pf-list');
+  if(!el) return;
+  el.innerHTML=S.projects.map(p=>`
+    <div class="ali">
+      <span class="ali-drag">⠿</span>
+      <div class="ali-info"><div class="ali-name">${p.name}</div><div class="ali-sub">${p.artist} · ${p.tag}</div></div>
+      <div class="ali-acts">
+        <button class="aibtn aibtn-e" onclick="editPrj(${p.id})">Modifier</button>
+        <button class="aibtn aibtn-d" onclick="delPrj(${p.id})">Suppr.</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderAVals(){
+  const el=document.getElementById('a-vals-list');
+  if(!el) return;
+  el.innerHTML=S.values.map((v,i)=>`
+    <div class="ag2" style="margin-bottom:10px">
+      <div class="af" style="margin:0"><label class="al">Valeur ${i+1}</label><input class="ai" value="${v.name}" onchange="S.values[${i}].name=this.value"></div>
+      <div class="af" style="margin:0"><label class="al">Description</label><input class="ai" value="${v.desc}" onchange="S.values[${i}].desc=this.value"></div>
+    </div>`).join('');
+}
+
+function renderATi(){
+  const el=document.getElementById('a-ti-list');
+  if(!el) return;
+  el.innerHTML=S.testimonials.map(t=>`
+    <div class="ali">
+      <span class="ali-drag">⠿</span>
+      <div class="ali-info"><div class="ali-name">${t.author}</div><div class="ali-sub">${t.txt.substring(0,55)}…</div></div>
+      <div class="ali-acts">
+        <button class="aibtn aibtn-e" onclick="editTesti(${t.id})">Modifier</button>
+        <button class="aibtn aibtn-d" onclick="delTesti(${t.id})">Suppr.</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderAClr(){
+  const el=document.getElementById('a-clr-list');
+  if(!el) return;
+  const lbl={'--r':'Rouge — CTA principal','--y':'Jaune — Accent secondaire','--bl':'Bleu — Info / liens','--gr':'Vert — Succès / badges','--b':'Noir — Texte / fond','--w':'Blanc — Fond principal','--wm':'Blanc cassé — Sections alternées','--g':'Gris — Bordures'};
+  el.innerHTML=Object.entries(S.colors).map(([k,v])=>`
+    <div class="af">
+      <label class="al">${lbl[k]||k}</label>
+      <div class="aclr-row">
+        <input type="color" class="aclr-in" value="${v}" oninput="updColor('${k}',this.value)">
+        <input class="aclr-hex" value="${v}" onchange="updColor('${k}',this.value)">
+      </div>
+    </div>`).join('');
+}
+
+function renderCRM(){
+  const el=document.getElementById('crm-list');
+  if(!el) return;
+  const sc={'en cours':'var(--y)','terminé':'var(--gr)','prospect':'var(--bl)'};
+  el.innerHTML=S.clients.map(c=>`
+    <div class="ali" style="flex-wrap:wrap;gap:10px">
+      <div style="width:8px;height:8px;border-radius:50%;background:${sc[c.status]||'var(--g)'};flex-shrink:0;margin-top:3px"></div>
+      <div class="ali-info">
+        <div class="ali-name">${c.name} — ${c.project}</div>
+        <div class="ali-sub">${c.type} · ${c.budget}€ budget · ${c.acompte}€ versé · <span style="color:${sc[c.status]}">${c.status.toUpperCase()}</span></div>
+        ${c.note?`<div class="ali-sub" style="color:var(--y);margin-top:2px">📌 ${c.note}</div>`:''}
+      </div>
+      <div class="ali-acts">
+        <button class="aibtn aibtn-e" onclick="editClient(${c.id})">Modifier</button>
+        <button class="aibtn aibtn-d" onclick="delClient(${c.id})">Suppr.</button>
+      </div>
+    </div>`).join('')||'<div style="color:rgba(255,255,255,.22);font-size:11px">Aucun client.</div>';
+  updateDash();
+}
+
+function renderCompta(){
+  const el=document.getElementById('cpt-list');
+  if(!el) return;
+  const sc={'payé':'var(--gr)','en attente':'var(--y)','en retard':'var(--r)'};
+  el.innerHTML=S.invoices.map(inv=>`
+    <div class="ali">
+      <div style="width:6px;height:6px;border-radius:50%;background:${sc[inv.status]||'gray'};flex-shrink:0"></div>
+      <div class="ali-info">
+        <div class="ali-name">${inv.client} — ${inv.type}</div>
+        <div class="ali-sub">${inv.date} · <span style="color:${sc[inv.status]}">${inv.status.toUpperCase()}</span> · ${inv.amount}€</div>
+      </div>
+      <div class="ali-acts">
+        <button class="aibtn aibtn-e" onclick="editInv(${inv.id})">Modifier</button>
+        <button class="aibtn aibtn-d" onclick="delInv(${inv.id})">Suppr.</button>
+      </div>
+    </div>`).join('')||'<div style="color:rgba(255,255,255,.22);font-size:11px">Aucune facture.</div>';
+  let ok=0,att=0,ret=0;
+  S.invoices.forEach(inv=>{ if(inv.status==='payé') ok+=inv.amount; else if(inv.status==='en attente') att+=inv.amount; else if(inv.status==='en retard') ret+=inv.amount; });
+  setText('cpt-ok',ok+' €'); setText('cpt-att',att+' €'); setText('cpt-ret',ret+' €');
+}
+
+function renderFiles(){
+  const el=document.getElementById('fich-list');
+  if(!el) return;
+  if(!S.files.length){ el.innerHTML='<div style="color:rgba(255,255,255,.22);font-size:11px;margin-top:8px">Aucun fichier.</div>'; return; }
+  el.innerHTML=S.files.map((f,i)=>`
+    <div class="ali">
+      <span style="font-size:18px">📄</span>
+      <div class="ali-info"><div class="ali-name">${f.name}</div><div class="ali-sub">${f.size} · ${f.date}</div></div>
+      <button class="aibtn aibtn-d" onclick="S.files.splice(${i},1);renderFiles()">Suppr.</button>
+    </div>`).join('');
+}
+
+function updateDash(){
+  setText('d-svc',S.services.length);
+  setText('d-pf',S.projects.length);
+  setText('d-cl',S.clients.filter(c=>c.status==='en cours').length);
+}
+
+// ================================================================
+// MODAL
+// ================================================================
+let mCb=null;
+function openM(title,body,cb){ document.getElementById('m-ttl').textContent=title; document.getElementById('m-body').innerHTML=body; document.getElementById('modal').classList.add('open'); mCb=cb; }
+function closeM(){ document.getElementById('modal').classList.remove('open'); mCb=null; }
+function saveM(){ if(mCb) mCb(); closeM(); saveAll(); }
+
+// ================================================================
+// CRUD: SERVICES
+// ================================================================
+function editSvc(id){
+  const s=S.services.find(x=>x.id===id); if(!s) return;
+  const cols=[['var(--r)','Rouge'],['var(--y)','Jaune'],['var(--bl)','Bleu'],['var(--gr)','Vert'],['var(--gm)','Gris']];
+  openM('Modifier le service',`
+    <div class="af"><label class="al">Numéro</label><input class="ai" id="m-n" value="${s.n}"></div>
+    <div class="af"><label class="al">Nom</label><input class="ai" id="m-name" value="${s.name}"></div>
+    <div class="af"><label class="al">Description</label><textarea class="ata" id="m-desc">${s.desc}</textarea></div>
+    <div class="af"><label class="al">Texte du lien</label><input class="ai" id="m-link" value="${s.link}"></div>
+    <div class="af"><label class="al">Couleur</label><select class="ase" id="m-col">${cols.map(([v,l])=>`<option value="${v}" ${s.col===v?'selected':''}>${l}</option>`).join('')}</select></div>`,
+  ()=>{ s.n=getV('m-n'); s.name=getV('m-name'); s.desc=getV('m-desc'); s.link=getV('m-link'); s.col=getV('m-col'); renderASvc(); });
+}
+function addSvc(){
+  const id=Math.max(0,...S.services.map(s=>s.id))+1;
+  S.services.push({id,n:`0${id}`,name:'Nouveau service',desc:'Description du service.',link:'En savoir plus',col:'var(--r)'});
+  renderASvc(); editSvc(id);
+}
+function delSvc(id){ if(!confirm('Supprimer ?')) return; S.services=S.services.filter(s=>s.id!==id); renderASvc(); saveAll(); }
+
+// ================================================================
+// CRUD: PROJECTS
+// ================================================================
+function editPrj(id){
+  const p=S.projects.find(x=>x.id===id); if(!p) return;
+  const cols=[['var(--r)','Rouge'],['var(--y)','Jaune'],['var(--bl)','Bleu'],['var(--gr)','Vert']];
+  openM('Modifier le projet',`
+    <div class="af"><label class="al">Nom du projet</label><input class="ai" id="m-name" value="${p.name}"></div>
+    <div class="af"><label class="al">Artiste / Contexte</label><input class="ai" id="m-art" value="${p.artist}"></div>
+    <div class="af"><label class="al">Tag</label><input class="ai" id="m-tag" value="${p.tag}"></div>
+    <div class="af"><label class="al">Filtre (mixage / mastering / accompagnement)</label><input class="ai" id="m-fil" value="${p.fil}"></div>
+    <div class="af"><label class="al">Lettre de fond (1-2 car.)</label><input class="ai" id="m-let" value="${p.let}" maxlength="2"></div>
+    <div class="af"><label class="al">Couleur</label><select class="ase" id="m-col">${cols.map(([v,l])=>`<option value="${v}" ${p.col===v?'selected':''}>${l}</option>`).join('')}</select></div>`,
+  ()=>{ p.name=getV('m-name'); p.artist=getV('m-art'); p.tag=getV('m-tag'); p.fil=getV('m-fil'); p.let=getV('m-let'); p.col=getV('m-col'); renderAPf(); });
+}
+function addPrj(){
+  const id=Math.max(0,...S.projects.map(p=>p.id))+1;
+  S.projects.push({id,name:'Nouveau projet',artist:'Artiste',tag:'Mixage',fil:'mixage',col:'var(--r)',let:'N'});
+  renderAPf(); editPrj(id);
+}
+function delPrj(id){ if(!confirm('Supprimer ?')) return; S.projects=S.projects.filter(p=>p.id!==id); renderAPf(); saveAll(); }
+
+// ================================================================
+// CRUD: TESTIMONIALS
+// ================================================================
+function editTesti(id){
+  const t=S.testimonials.find(x=>x.id===id); if(!t) return;
+  openM('Modifier le témoignage',`
+    <div class="af"><label class="al">Témoignage</label><textarea class="ata" id="m-txt">${t.txt}</textarea></div>
+    <div class="af"><label class="al">Auteur</label><input class="ai" id="m-auth" value="${t.author}"></div>
+    <div class="af"><label class="al">Rôle</label><input class="ai" id="m-role" value="${t.role}"></div>`,
+  ()=>{ t.txt=getV('m-txt'); t.author=getV('m-auth'); t.role=getV('m-role'); renderATi(); });
+}
+function addTesti(){
+  const id=Math.max(0,...S.testimonials.map(t=>t.id))+1;
+  S.testimonials.push({id,txt:'Témoignage à compléter.',author:'Prénom N.',role:'Artiste'});
+  renderATi(); editTesti(id);
+}
+function delTesti(id){ if(!confirm('Supprimer ?')) return; S.testimonials=S.testimonials.filter(t=>t.id!==id); renderATi(); saveAll(); }
+
+// ================================================================
+// CRUD: CLIENTS
+// ================================================================
+function newClient(){
+  const id=Math.max(0,...S.clients.map(c=>c.id))+1;
+  openM('Nouveau client',clientForm({}),()=>{
+    S.clients.push({id,name:getV('m-cn'),email:getV('m-ce'),project:getV('m-cp'),type:getV('m-ct'),status:getV('m-cs'),budget:parseFloat(getV('m-cb'))||0,acompte:parseFloat(getV('m-ca'))||0,note:getV('m-cn2')});
+    renderCRM();
+  });
+}
+function editClient(id){
+  const c=S.clients.find(x=>x.id===id); if(!c) return;
+  openM('Modifier le client',clientForm(c),()=>{
+    c.name=getV('m-cn'); c.email=getV('m-ce'); c.project=getV('m-cp'); c.type=getV('m-ct');
+    c.status=getV('m-cs'); c.budget=parseFloat(getV('m-cb'))||0; c.acompte=parseFloat(getV('m-ca'))||0; c.note=getV('m-cn2');
+    renderCRM();
+  });
+}
+function clientForm(c){
+  const types=['Mixage','Mastering','Mix + Mastering','Accompagnement','Autre'];
+  const statuses=['prospect','en cours','terminé'];
+  return `
+    <div class="ag2">
+      <div class="af"><label class="al">Nom</label><input class="ai" id="m-cn" value="${c.name||''}"></div>
+      <div class="af"><label class="al">Email</label><input class="ai" id="m-ce" value="${c.email||''}"></div>
+    </div>
+    <div class="af"><label class="al">Projet</label><input class="ai" id="m-cp" value="${c.project||''}"></div>
+    <div class="af"><label class="al">Type</label><select class="ase" id="m-ct">${types.map(t=>`<option ${c.type===t?'selected':''}>${t}</option>`).join('')}</select></div>
+    <div class="af"><label class="al">Statut</label><select class="ase" id="m-cs">${statuses.map(s=>`<option value="${s}" ${c.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="ag2">
+      <div class="af"><label class="al">Budget €</label><input class="ai" id="m-cb" type="number" value="${c.budget||0}"></div>
+      <div class="af"><label class="al">Acompte €</label><input class="ai" id="m-ca" type="number" value="${c.acompte||0}"></div>
+    </div>
+    <div class="af"><label class="al">Notes</label><textarea class="ata" id="m-cn2" style="min-height:55px">${c.note||''}</textarea></div>`;
+}
+function delClient(id){ if(!confirm('Supprimer ?')) return; S.clients=S.clients.filter(c=>c.id!==id); renderCRM(); }
+
+// ================================================================
+// CRUD: INVOICES
+// ================================================================
+function newInv(){
+  const id=Math.max(0,...S.invoices.map(i=>i.id))+1;
+  const today=new Date().toISOString().split('T')[0];
+  openM('Nouvelle facture',invForm({date:today}),()=>{
+    S.invoices.push({id,client:getV('m-ic'),type:getV('m-it'),amount:parseFloat(getV('m-ia'))||0,date:getV('m-id'),status:getV('m-is')});
+    renderCompta();
+  });
+}
+function editInv(id){
+  const inv=S.invoices.find(x=>x.id===id); if(!inv) return;
+  openM('Modifier la facture',invForm(inv),()=>{
+    inv.client=getV('m-ic'); inv.type=getV('m-it'); inv.amount=parseFloat(getV('m-ia'))||0; inv.date=getV('m-id'); inv.status=getV('m-is');
+    renderCompta();
+  });
+}
+function invForm(inv){
+  const types=['Acompte','Solde total','Devis','Facture'];
+  const statuses=['en attente','payé','en retard'];
+  return `
+    <div class="af"><label class="al">Client</label><input class="ai" id="m-ic" value="${inv.client||''}"></div>
+    <div class="af"><label class="al">Type</label><select class="ase" id="m-it">${types.map(t=>`<option ${inv.type===t?'selected':''}>${t}</option>`).join('')}</select></div>
+    <div class="ag2">
+      <div class="af"><label class="al">Montant €</label><input class="ai" id="m-ia" type="number" value="${inv.amount||0}"></div>
+      <div class="af"><label class="al">Date</label><input class="ai" id="m-id" type="date" value="${inv.date||''}"></div>
+    </div>
+    <div class="af"><label class="al">Statut</label><select class="ase" id="m-is">${statuses.map(s=>`<option value="${s}" ${inv.status===s?'selected':''}>${s}</option>`).join('')}</select></div>`;
+}
+function delInv(id){ if(!confirm('Supprimer ?')) return; S.invoices=S.invoices.filter(i=>i.id!==id); renderCompta(); }
+
+// ================================================================
+// COLORS & FONT
+// ================================================================
+function updColor(key,val){
+  S.colors[key]=val;
+  document.documentElement.style.setProperty(key,val);
+  renderAClr();
+}
+function changeFont(f){
+  document.body.style.fontFamily=`'${f}',sans-serif`;
+}
+
+// ================================================================
+// MEDIA UPLOADS
+// ================================================================
+function upLogo(inp){
+  if(!inp.files[0]) return;
+  const r=new FileReader();
+  r.onload=e=>{ document.getElementById('logo-prev-img').src=e.target.result; document.getElementById('logo-prev').style.display='block'; toast('Logo chargé'); };
+  r.readAsDataURL(inp.files[0]);
+}
+function upAbout(inp){
+  if(!inp.files[0]) return;
+  const r=new FileReader();
+  r.onload=e=>{ const v=document.getElementById('about-vis'); if(v){ v.style.backgroundImage=`url(${e.target.result})`; v.style.backgroundSize='cover'; v.style.backgroundPosition='center'; } toast('Photo À propos mise à jour'); };
+  r.readAsDataURL(inp.files[0]);
+}
+function upHero(inp){
+  if(!inp.files[0]) return;
+  const r=new FileReader();
+  r.onload=e=>{ const h=document.getElementById('hero'); if(h){ h.style.backgroundImage=`url(${e.target.result})`; h.style.backgroundSize='cover'; h.style.backgroundPosition='center'; } toast('Fond Hero mis à jour'); };
+  r.readAsDataURL(inp.files[0]);
+}
+function upFile(inp){
+  if(!inp.files[0]) return;
+  const f=inp.files[0];
+  const sz=f.size<1048576?Math.round(f.size/1024)+' Ko':(f.size/1048576).toFixed(1)+' Mo';
+  S.files.push({name:f.name,size:sz,date:new Date().toLocaleDateString('fr-FR')});
+  renderFiles(); toast('Fichier ajouté : '+f.name);
+}
+
+// ================================================================
+// ADMIN NAV
+// ================================================================
+const tabTitles={dash:['Dashboard','Vue d\'ensemble'],hero:['Accueil / Hero','Bandeau principal et stats'],svc:['Services','Gérer les prestations'],pf:['Portfolio','Projets et réalisations'],ab:['À propos','Textes et valeurs'],ti:['Témoignages','Avis clients'],ct:['Contact','Informations de contact'],ft:['Footer','Bas de page'],clr:['Couleurs & Typo','Identité visuelle'],med:['Médias','Logo et images'],crm:['Clients & Projets','Suivi CRM'],cpt:['Comptabilité','Paiements et factures'],fich:['Fichiers','Dépôt de fichiers']};
+
+function swTab(name,el){
+  document.querySelectorAll('.adm-tc').forEach(t=>t.classList.remove('act'));
+  document.querySelectorAll('.adm-item').forEach(n=>n.classList.remove('act'));
+  const tc=document.getElementById('tc-'+name);
+  if(tc) tc.classList.add('act');
+  if(el) el.classList.add('act');
+  const tt=tabTitles[name];
+  if(tt){ setText('adm-ttl',tt[0]); setText('adm-sub',tt[1]); }
+}
+
+function openAdm(){ document.getElementById('adm').classList.add('open'); document.body.style.overflow='hidden'; populate(); }
+function closeAdm(){ document.getElementById('adm').classList.remove('open'); document.body.style.overflow=''; }
+
+// ================================================================
+// MOBILE NAV
+// ================================================================
+function openMob(){ document.getElementById('mobNav').classList.add('open'); }
+function closeMob(){ document.getElementById('mobNav').classList.remove('open'); }
+
+// ================================================================
+// PORTFOLIO FILTERS
+// ================================================================
+function initFilters(){
+  document.querySelectorAll('.pf-btn').forEach(btn=>{
+    btn.onclick=function(){
+      document.querySelectorAll('.pf-btn').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      const f=this.dataset.f;
+      document.querySelectorAll('.pj-card').forEach(c=>{ c.style.display=(f==='all'||c.dataset.f===f)?'':'none'; });
+    };
+  });
+}
+
+// ================================================================
+// AUDIO PLAYER MOCK
+// ================================================================
+function togglePlay(btn){
+  const playing=btn.dataset.p==='1';
+  document.querySelectorAll('.play-btn').forEach(b=>{ b.dataset.p='0'; b.innerHTML='<svg width="8" height="11" fill="white" viewBox="0 0 8 11"><path d="M0 0L8 5.5L0 11V0Z"/></svg>'; });
+  document.querySelectorAll('.wb').forEach(b=>{ b.style.background='rgba(255,255,255,.18)'; b.style.animation=''; });
+  if(!playing){
+    btn.dataset.p='1';
+    btn.innerHTML='<svg width="9" height="11" fill="white" viewBox="0 0 9 11"><rect x=".5" y=".5" width="3" height="10" rx="1"/><rect x="5.5" y=".5" width="3" height="10" rx="1"/></svg>';
+    btn.closest('.pj-player').querySelectorAll('.wb').forEach(b=>{
+      b.style.background='var(--r)';
+      b.style.animation=`wa ${.3+Math.random()*.5}s ease-in-out infinite alternate`;
+    });
+  }
+}
+
+// ================================================================
+// SCROLL REVEAL
+// ================================================================
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); }),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>{ el.classList.remove('vis'); obs.observe(el); });
+}
+
+// ================================================================
+// TOAST
+// ================================================================
+function toast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// ================================================================
+// FORM
+// ================================================================
+function submitForm(e){
+  e.preventDefault();
+  toast('Message envoyé ! Réponse sous 48h.');
+  e.target.reset();
+}
+
+// ================================================================
+// NAV SCROLL
+// ================================================================
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').style.boxShadow=window.scrollY>30?'0 2px 18px rgba(23,23,23,.07)':'none';
+});
+
+// ================================================================
+// WAVEFORM KEYFRAME
+// ================================================================
+const ws=document.createElement('style');
+ws.textContent='@keyframes wa{from{transform:scaleY(.35)}to{transform:scaleY(1.25)}}';
+document.head.appendChild(ws);
+
+// ================================================================
+// INIT
+// ================================================================
+document.addEventListener('DOMContentLoaded',()=>{
+  render();
+  setTimeout(initReveal,80);
+});
+</script>
+</body>
+</html>
